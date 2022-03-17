@@ -92,7 +92,7 @@ resource "aws_instance" "jupyter" {
 
 resource "aws_ebs_volume" "jupyter" {
   availability_zone = var.availability_zone
-  size              = 8
+  size              = 30
   type              = "gp2"
 
   tags = {
