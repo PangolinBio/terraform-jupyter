@@ -27,9 +27,3 @@ runuser -l ec2-user -c 'jupyter notebook --generate-config' &&
 # add some data science packages to the environment
 pip install boto3
 pip install s3fs
-
-# generate cert for jupyter notebook
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mykey.key -out mycert.pem \
-	-subj "/C=US/ST=NJ/L=Stockton/O=Dis/CN=jupyter"
-# start jupyter notebook
-nohup jupyter notebook --certfile=mycert.pem --keyfile mykey.key 
