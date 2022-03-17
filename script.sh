@@ -11,7 +11,7 @@ sudo mkfs.xfs /dev/sdb -f
 sudo mkdir /anaconda3
 sudo mount /dev/sdb /anaconda3
 sudo chown -R ec2-user:ec2-user /anaconda3
-sudo echo "UUID=$(lsblk -nr -o UUID,MOUNTPOINT | grep "/anaconda3" | cut -d ' ' -f 1) /anaconda3 xfs defaults,nofail 1 2" >> /etc/fstab
+sudo echo "UUID=$(lsblk -nr -o UUID,MOUNTPOINT | grep "/anaconda3" | cut -d ' ' -f 1) /anaconda3 xfs defaults,nofail 1 2" | sudo tee -a /etc/fstab
 # Install Anaconda
 wget https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh -O /home/ec2-user/anaconda.sh &&
     bash /home/ec2-user/anaconda.sh -u -b -p /anaconda3 &&
