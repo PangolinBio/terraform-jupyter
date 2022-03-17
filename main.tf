@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = "us-west-2"
+  region = var.region
 }
 
 data "aws_ami" "al2" {
@@ -20,12 +20,12 @@ resource "tls_private_key" "key" {
 
 resource "aws_key_pair" "generated_key" {
   key_name   = "key-${uuid()}"
-  public_key = "${tls_private_key.key.public_key_openssh}"
+  public_key = tls_private_key.key.public_key_openssh
 }
 
 resource "local_file" "pem" {
   filename        = "${aws_key_pair.generated_key.key_name}.pem"
-  content         = "${tls_private_key.key.private_key_pem}"
+  content         = tls_private_key.key.private_key_pem
   file_permission = "400"
 }
 
@@ -46,7 +46,7 @@ resource "aws_security_group" "jupyter" {
     to_port     = 8898
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "${title(var.service)}"
+    description = title(var.service)
   }
 
   egress {
@@ -66,12 +66,12 @@ resource "aws_security_group" "jupyter" {
 }
 
 resource "aws_instance" "jupyter" {
-  ami                    = "${data.aws_ami.al2.id}"
-  availability_zone      = "${var.availability_zone}"
-  instance_type          = "${var.instance_type}"
-  key_name               = "${aws_key_pair.generated_key.key_name}"
+  ami                    = data.aws_ami.al2.id
+  availability_zone      = var.availability_zone
+  instance_type          = var.instance_type
+  key_name               = aws_key_pair.generated_key.key_name
   vpc_security_group_ids = ["${aws_security_group.jupyter.id}"]
-  user_data              = "${file("script.sh")}"
+  user_data              = file("script.sh")
 
   tags = {
     Name        = "${title(var.service)}-${timestamp()}"
@@ -91,7 +91,7 @@ resource "aws_instance" "jupyter" {
 }
 
 resource "aws_ebs_volume" "jupyter" {
-  availability_zone = "${var.availability_zone}"
+  availability_zone = var.availability_zone
   size              = 8
   type              = "gp2"
 
@@ -106,8 +106,8 @@ resource "aws_ebs_volume" "jupyter" {
 
 resource "aws_volume_attachment" "jupyter" {
   device_name  = "/dev/sdb"
-  instance_id  = "${aws_instance.jupyter.id}"
-  volume_id    = "${aws_ebs_volume.jupyter.id}"
+  instance_id  = aws_instance.jupyter.id
+  volume_id    = aws_ebs_volume.jupyter.id
   force_detach = true
 }
 
