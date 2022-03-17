@@ -13,7 +13,7 @@ sudo mount /dev/sdb /anaconda3
 sudo chown -R ec2-user:ec2-user /anaconda3
 sudo echo "UUID=$(lsblk -nr -o UUID,MOUNTPOINT | grep "/anaconda3" | cut -d ' ' -f 1) /anaconda3 xfs defaults,nofail 1 2" | sudo tee -a /etc/fstab
 # Install Anaconda
-wget https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh -O /home/ec2-user/anaconda.sh &&
+wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh -O /home/ec2-user/anaconda.sh &&
     bash /home/ec2-user/anaconda.sh -u -b -p /anaconda3 &&
     echo 'export PATH="/anaconda3/bin:$PATH"' >> /home/ec2-user/.bashrc &&
     rm -rf /home/ec2-user/anaconda.sh &&
