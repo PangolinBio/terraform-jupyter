@@ -26,8 +26,6 @@ wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh -O /hom
     bash /home/ec2-user/anaconda.sh -u -b -p /anaconda3 &&
     echo 'export PATH="/anaconda3/bin:$PATH"' >> /home/ec2-user/.bashrc &&
     rm -rf /home/ec2-user/anaconda.sh &&
-## Update Conda
-conda update -n base -c defaults conda &&
 ## Make sure the anaconda environment is writeable
 sudo chown -R ec2-user:ec2-user /anaconda3 &&
 # Configure Jupyter for AWS HTTP
