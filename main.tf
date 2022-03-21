@@ -73,6 +73,11 @@ resource "aws_instance" "jupyter" {
   vpc_security_group_ids = ["${aws_security_group.jupyter.id}"]
   user_data              = file("script.sh")
 
+  root_block_device = {
+    volume_size = 30
+    volume_type = "standard"
+  }
+
   tags = {
     Name        = "${title(var.service)}-${timestamp()}"
     Service     = "${title(var.service)}"
