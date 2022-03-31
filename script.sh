@@ -16,7 +16,7 @@ unzip -q /tmp/awscliv2.zip -d /tmp
 /tmp/aws/install -b /usr/bin
 # check that the aws-cli was actually installed. if not shutdown (terminate) the instance
 command -v aws || shutdown -P now
-sudo yum install -y amazon-efs-utils
+sudo yum install -y amazon-efs-utils docker htop
 # Mount /anaconda3
 sudo mkfs.xfs /dev/sdb -f
 sudo mkdir /anaconda3
@@ -42,3 +42,6 @@ then
     echo $USEEFS:/ /mnt/efs efs tls,_netdev >> /etc/fstab
     mount -a -t efs defaults
 fi
+sudo groupadd docker
+sudo usermod -aG docker ec2-user
+newgrp docker || true
